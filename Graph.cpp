@@ -45,6 +45,22 @@ bool Graph::addEdge(char* label1, char* label2, int weight){
     return true;
 }
 
+bool Graph::removeVertex(char* label){
+    int index = indexOf(labels, label);
+    if(index == -1){//Vertex not there?
+        return false;
+    }
+    delete labels[index];
+    labels.erase(labels.begin() + index);
+    for(int i=0; i < adjMatrix.size(); i++){//Erase connections of all vertices to this vertex.
+        adjMatrix[i]->erase(adjMatrix[i]->begin() + index);
+    }
+    //Now erase this vertex's row:
+    delete adjMatrix[index];
+    adjMatrix.erase(adjMatrix.begin() + index);
+    return true;
+}
+
 int indexOf(vector<char*> &vect, char* element){
     for(int i = 0; i < vect.size(); i++){
         if(strcmp(vect[i], element) == 0){
