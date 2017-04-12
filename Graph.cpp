@@ -61,6 +61,16 @@ bool Graph::removeVertex(char* label){
     return true;
 }
 
+bool Graph::removeEdge(char* label1, char* label2){
+    //Will return false if cannot find labels or edge doesn't exist:
+    int index1 = indexOf(labels, label1), index2 = indexOf(labels, label2);
+    if(index1 == -1 || index2 == -1 || (*adjMatrix[index1])[index2] == -1){
+        return false;
+    }
+    (*adjMatrix[index1])[index2] = -1;
+    return true;
+}
+
 int indexOf(vector<char*> &vect, char* element){
     for(int i = 0; i < vect.size(); i++){
         if(strcmp(vect[i], element) == 0){

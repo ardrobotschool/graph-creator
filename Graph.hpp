@@ -11,7 +11,7 @@ class Graph{
     bool addVertex(char* label);
     bool addEdge(char* label1, char* label2, int weight); //Will replace if exists
     bool removeVertex(char* label);
-    //bool removeEdge(char* label1, char* label2);
+    bool removeEdge(char* label1, char* label2);
   private:
     vector<vector<int>*> adjMatrix;
     vector<char*> labels;
