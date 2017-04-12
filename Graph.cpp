@@ -4,6 +4,8 @@
 
 using namespace std;
 
+int indexOf(vector<char*> &vect, char* label);
+
 Graph::Graph(){}
 
 Graph::~Graph(){
@@ -19,12 +21,9 @@ Graph::~Graph(){
 }
 
 bool Graph::addVertex(char* label){
-    for(int i = 0; i < labels.size(); i++){//Check if vertex with same label exists
-        if(strcmp(label, labels[i]) == 0){
-            return false;
-        }
+    if(indexOf(labels, label) != -1){//Check if vertex with same label exists
+        return false;
     }
-    
     labels.push_back(strcpy(new char[strlen(label)+1], label));
     for(int i = 0; i < adjMatrix.size(); i++){
         //Old vertices don't connect to new vertex.
@@ -35,4 +34,22 @@ bool Graph::addVertex(char* label){
     for(int i = 0; i < adjMatrix.size(); i++){//Initially not connected to anything.
         adjMatrix[adjMatrix.size()-1]->push_back(-1);
     }
+}
+
+bool Graph::addEdge(char* label1, char* label2, int weight){
+    int index1 = indexOf(labels, label1), index2 = indexOf(labels, label2);
+    if(index1 == -1 || index2 == -1){
+        return false;
+    }
+    (*adjMatrix[index1])[index2] = weight;
+    return true;
+}
+
+int indexOf(vector<char*> &vect, char* element){
+    for(int i = 0; i < vect.size(); i++){
+        if(strcmp(vect[i], element) == 0){
+            return i;
+        }
+    }
+    return -1;
 }
