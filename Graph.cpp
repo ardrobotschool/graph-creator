@@ -4,7 +4,7 @@
 
 using namespace std;
 
-int indexOf(vector<char*> &vect, char* label);
+int indexOf(vector<char*> &vect, const char* label);
 
 Graph::Graph(){}
 
@@ -20,7 +20,7 @@ Graph::~Graph(){
     }
 }
 
-bool Graph::addVertex(char* label){
+bool Graph::addVertex(const char* label){
     if(indexOf(labels, label) != -1){//Check if vertex with same label exists
         return false;
     }
@@ -71,11 +71,34 @@ bool Graph::removeEdge(char* label1, char* label2){
     return true;
 }
 
-int indexOf(vector<char*> &vect, char* element){
+int indexOf(vector<char*> &vect, const char* element){
     for(int i = 0; i < vect.size(); i++){
         if(strcmp(vect[i], element) == 0){
             return i;
         }
     }
     return -1;
+}
+
+void Graph::printAdjMatrix(){
+    //Top row:
+    cout << "  ";
+    for(int i=0; i < labels.size(); i++){
+        cout << labels[i] << ' ';
+    }
+    cout << endl;
+    //The rest:
+    for(int i = 0; i < adjMatrix.size(); i++){
+        cout << labels[i] << ' ';
+        for(int j = 0; j < labels.size(); j++){
+            if((*adjMatrix[i])[j] >= 0){
+                cout << (*adjMatrix[i])[j];
+            }
+            else{
+                cout << 'X';
+            }
+            cout << ' ';
+        }
+        cout << endl;
+    }
 }
