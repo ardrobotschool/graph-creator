@@ -178,6 +178,18 @@ pair<vector<char*>, int> Graph::findPath(const char* label1, const char* label2)
     }
 }
 
+void Graph::printPathDetails(const char* label1, const char* label2){
+    pair<vector<char*>, int> result = findPath(label1, label2);
+    cout << "Path: " << result.first[0];
+    delete[] result.first[0];
+    for(int i = 1; i < result.first.size(); i++){
+        cout << "->" << result.first[i];
+        delete[] result.first[i];
+    }
+    cout << ";" << endl;
+    cout << "Distance travelled: " << result.second << '.' << endl;
+}
+
 char* heapCopy(char* str){
     return strcpy(new char[strlen(str)+1], str);
 }

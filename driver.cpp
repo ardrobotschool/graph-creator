@@ -21,13 +21,6 @@ int main(){
     graph.addBothEdges("3", "4", 11);
     graph.addBothEdges("2", "4", 15);
     //graph.printAdjMatrix();
-    vector<char*> path = graph.findPath("1", "5").first;
-    cout << path[0];
-    delete[] path[0];
-    for(int i = 1; i < path.size(); i++){
-        cout << "->" << path[i];
-        delete[] path[i];
-    }
-    cout << endl;
+    graph.printPathDetails("1", "5");
     return 0;
 }
