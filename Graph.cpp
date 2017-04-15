@@ -166,6 +166,12 @@ pair<vector<char*>, int> Graph::findPath(const char* label1, const char* label2)
             }
         }
         if(noPath){
+            //Deallocate everything.
+            for(int i = 0; i < labels.size(); i++){
+                for(int j=0; j<nodes[i].first.size(); j++){
+                    delete[] (nodes[i].first)[j];
+                }
+            }
             return nodes[index2];
         }
         int smallest = infty;
@@ -180,6 +186,14 @@ pair<vector<char*>, int> Graph::findPath(const char* label1, const char* label2)
 
 void Graph::printPathDetails(const char* label1, const char* label2){
     pair<vector<char*>, int> result = findPath(label1, label2);
+    if(result.second == -1){
+        cout << "Could not find both vertices." << endl;
+        return;
+    }
+    if(result.second == infty){
+        cout << "No path exists between the vertices." << endl;
+        return;
+    }
     cout << "Path: " << result.first[0];
     delete[] result.first[0];
     for(int i = 1; i < result.first.size(); i++){
