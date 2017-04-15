@@ -5,8 +5,10 @@
 using namespace std;
 
 int indexOf(vector<char*> &vect, const char* label);
+char* heapCopy(char* str);
+void pathCpy(vector<char*> &destination, vector<char*> &source);
 
-Graph::Graph(){}
+Graph::Graph() : infty(numeric_limits<int>::max()){}
 
 Graph::~Graph(){
     //Deallocate stuff:
@@ -36,13 +38,17 @@ bool Graph::addVertex(const char* label){
     }
 }
 
-bool Graph::addEdge(char* label1, char* label2, int weight){
+bool Graph::addEdge(const char* label1, const char* label2, int weight){
     int index1 = indexOf(labels, label1), index2 = indexOf(labels, label2);
     if(index1 == -1 || index2 == -1){
         return false;
     }
     (*adjMatrix[index1])[index2] = weight;
     return true;
+}
+
+bool Graph::addBothEdges(const char* label1, const char* label2, int weight){
+    return addEdge(label1, label2, weight) && addEdge(label2, label1, weight);
 }
 
 bool Graph::removeVertex(char* label){
@@ -100,5 +106,81 @@ void Graph::printAdjMatrix(){
             cout << ' ';
         }
         cout << endl;
+    }
+}
+
+pair<vector<char*>, int> Graph::findPath(const char* label1, const char* label2){
+    //Returns shortest path (sequence of vertex labels) along with the "distance travelled."
+    //If vertices don't exist, second will be -1
+    //If no path exists between the vertices, second will be infty.
+    pair<vector<char*>, int> result;
+    int index1 = indexOf(labels, label1), index2 = indexOf(labels, label2);
+    if(index1 == -1 || index2 == -1){//At least one of the labels doesn't exist.
+        result.second = -1;
+        return result;
+    }
+    //For each node, we will set a tentative distance, initially infinity;
+    //We will also keep track of the paths whereby shortest distances are achieved.
+    //We also need to keep track of whether we've visited a node already.
+    int unvisited[labels.size()];
+    vector< pair<vector<char*>, int> > nodes; //Same order as labels.
+    for(int i = 0; i < labels.size(); i++){
+        unvisited[i] = true;
+        nodes.push_back(pair<vector<char*>, int>());
+        nodes[nodes.size()-1].second = infty;
+    }
+    //Our starting point has distance 0
+    unvisited[index1] = false;
+    nodes[index1].second = 0;
+    nodes[index1].first.push_back(heapCopy(labels[index1]));
+    int current = index1;
+    while(true){
+        //Calculate tentative distances and paths for nodes connected to current.
+        for(int i = 0; i < labels.size(); i++){
+            if((*adjMatrix[current])[i] != -1 && unvisited[i]){
+                int distance = nodes[current].second + (*adjMatrix[current])[i];
+                if(distance < nodes[i].second){
+                    nodes[i].second = distance;
+                    pathCpy(nodes[i].first, nodes[current].first);
+                    nodes[i].first.push_back(heapCopy(labels[i]));
+                }
+            }
+        }
+        unvisited[current] = false;
+        if(unvisited[index2] == false){
+            //Deallocate everything but the returned stuff.
+            return nodes[index2];
+        }
+        bool noPath = true;
+        for(int i = 0; i < labels.size(); i++){
+            if(unvisited[i] && nodes[i].second != infty){
+                noPath = false;
+                break;
+            }
+        }
+        if(noPath){
+            return nodes[index2];
+        }
+        int smallest = infty;
+        for(int i = 0; i < labels.size(); i++){
+            if(unvisited[i] && nodes[i].second < smallest){
+                smallest = nodes[i].second;
+                current = i;
+            }
+        }
+    }
+}
+
+char* heapCopy(char* str){
+    return strcpy(new char[strlen(str)+1], str);
+}
+
+void pathCpy(vector<char*> &destination, vector<char*> &source){
+    for(int i = 0; i < destination.size(); i++){
+        delete destination[i];
+    }
+    destination.clear();
+    for(int i = 0; i < source.size(); i++){
+        destination.push_back(heapCopy(source[i]));
     }
 }
