@@ -56,7 +56,7 @@ bool Graph::removeVertex(char* label){
     if(index == -1){//Vertex not there?
         return false;
     }
-    delete labels[index];
+    delete[] labels[index];
     labels.erase(labels.begin() + index);
     for(int i=0; i < adjMatrix.size(); i++){//Erase connections of all vertices to this vertex.
         adjMatrix[i]->erase(adjMatrix[i]->begin() + index);
@@ -149,6 +149,13 @@ pair<vector<char*>, int> Graph::findPath(const char* label1, const char* label2)
         unvisited[current] = false;
         if(unvisited[index2] == false){
             //Deallocate everything but the returned stuff.
+            for(int i = 0; i < labels.size(); i++){
+                if(i != index2){
+                    for(int j=0; j<nodes[i].first.size(); j++){
+                        delete[] (nodes[i].first)[j];
+                    }
+                }
+            }
             return nodes[index2];
         }
         bool noPath = true;
@@ -177,7 +184,7 @@ char* heapCopy(char* str){
 
 void pathCpy(vector<char*> &destination, vector<char*> &source){
     for(int i = 0; i < destination.size(); i++){
-        delete destination[i];
+        delete[] destination[i];
     }
     destination.clear();
     for(int i = 0; i < source.size(); i++){
