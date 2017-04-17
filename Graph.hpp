@@ -17,6 +17,7 @@ class Graph{
     bool addBothEdges(const char* label1, const char* label2, int weight);
     void printAdjMatrix();
     void printPathDetails(const char* label1, const char* label2);
+    void clear();
   private:
     pair<vector<char*>, int> findPath(const char* label1, const char* label2);
     const int infty;

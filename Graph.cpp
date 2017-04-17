@@ -204,6 +204,12 @@ void Graph::printPathDetails(const char* label1, const char* label2){
     cout << "Distance travelled: " << result.second << '.' << endl;
 }
 
+void Graph::clear(){
+    while(!labels.empty()){
+        removeVertex(labels[0]);
+    }
+}
+
 char* heapCopy(char* str){
     return strcpy(new char[strlen(str)+1], str);
 }
