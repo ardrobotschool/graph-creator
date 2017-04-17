@@ -36,6 +36,7 @@ bool Graph::addVertex(const char* label){
     for(int i = 0; i < adjMatrix.size(); i++){//Initially not connected to anything.
         adjMatrix[adjMatrix.size()-1]->push_back(-1);
     }
+    return true;
 }
 
 bool Graph::addEdge(const char* label1, const char* label2, int weight){
