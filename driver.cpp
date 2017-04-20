@@ -14,6 +14,7 @@ int main(){
         cout << "(3)Remove a vertex." << endl;
         cout << "(4)Remove an edge." << endl;
         cout << "(5)Print the details of the shortest path between two vertices." << endl;
+        cout << "(6)Add an edge in both directions." << endl;
         cout << "(c)Clear graph." << endl;
         cout << "(q)Quit" << endl;
         cout << "(0)Do science." << endl;
@@ -81,6 +82,22 @@ int main(){
             cout << "Enter label of destination vertex: ";
             cin.getline(label2, 32);
             graph.printPathDetails(label1, label2);
+        }
+        else if(input[0] == '6'){
+            char label1[32], label2[32];
+            int weight;
+            cout << "Enter label of first vertex: ";
+            cin.getline(label1, 32);
+            cout << "Enter label of second vertex: ";
+            cin.getline(label2, 32);
+            cout << "Enter an integer weight: ";
+            cin >> weight;
+            if(graph.addBothEdges(label1, label2, weight)){
+                cout << "Done." << endl;
+            }
+            else{
+                cout << "The edge or the vertices could not be found." << endl;
+            }
         }
         else if(input[0] == 'c'){
             graph.clear();
