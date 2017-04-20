@@ -1,3 +1,9 @@
+/*
+ * A program that allows the user to create a graph. It keeps track of the graph
+ * using an adjacency matrix. The user can add edges with a specified weight
+ * and in a specified direction.
+ * Artur Drobot, April 2017.
+ */
 #include <iostream>
 #include "Graph.hpp"
 #include <cstring>
