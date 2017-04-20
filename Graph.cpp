@@ -88,15 +88,28 @@ int indexOf(vector<char*> &vect, const char* element){
 }
 
 void Graph::printAdjMatrix(){
+    //Get max label length:
+    int maxlength = 0;
+    for(int i = 0; i < labels.size(); i++){
+        int len = strlen(labels[i]);
+        if(len > maxlength){
+            maxlength = len;
+        }
+    }
     //Top row:
-    cout << "  ";
+    for(int i = 0; i < maxlength + 1; i++){
+        cout << ' ';
+    }
     for(int i=0; i < labels.size(); i++){
         cout << labels[i] << ' ';
     }
     cout << endl;
     //The rest:
     for(int i = 0; i < adjMatrix.size(); i++){
-        cout << labels[i] << ' ';
+        cout << labels[i];
+        for(int k=0; k < maxlength - strlen(labels[i]) + 1; k++){
+            cout << ' ';
+        }
         for(int j = 0; j < labels.size(); j++){
             if((*adjMatrix[i])[j] >= 0){
                 cout << (*adjMatrix[i])[j];
@@ -104,7 +117,9 @@ void Graph::printAdjMatrix(){
             else{
                 cout << 'X';
             }
-            cout << ' ';
+            for(int k = 0; k < strlen(labels[j]); k++){
+                cout << ' ';
+            }
         }
         cout << endl;
     }
